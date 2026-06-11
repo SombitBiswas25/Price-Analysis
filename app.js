@@ -477,3 +477,12 @@ function runCalculation() {
     resultInfoEl.innerText = `Calculated using live Silver rate of ${formatINR(silverPriceGramInr * TROY_OUNCE_TO_GRAMS, 0)}/oz and USD/INR of ₹${currentUSDINR.toFixed(2)}.`;
   }
 }
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker registered successfully:', reg.scope))
+      .catch(err => console.error('Service Worker registration failed:', err));
+  });
+}
