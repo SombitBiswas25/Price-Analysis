@@ -488,31 +488,31 @@ if ('serviceWorker' in navigator) {
 }
 
 // Custom PWA Install Promotion
-let deferredPrompt;
 const installBtn = document.getElementById('install-pwa-btn');
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent Chrome 67 and earlier from automatically showing the prompt
-  e.preventDefault();
-  // Stash the event so it can be triggered later.
-  deferredPrompt = e;
-  // Update UI to show the install button
-  if (installBtn) {
+function showInstallButton() {
+  if (installBtn && window.deferredPrompt) {
     installBtn.style.display = 'flex';
   }
-  console.log("'beforeinstallprompt' event was fired.");
-});
+}
+
+// Check if event fired before app.js was parsed
+showInstallButton();
+
+// Listen for custom event if it fires after app.js starts parsing
+window.addEventListener('pwa-installable', showInstallButton);
 
 if (installBtn) {
   installBtn.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
+    const promptEvent = window.deferredPrompt;
+    if (!promptEvent) return;
     // Show the install prompt
-    deferredPrompt.prompt();
+    promptEvent.prompt();
     // Wait for the user to respond to the prompt
-    const { outcome } = await deferredPrompt.userChoice;
+    const { outcome } = await promptEvent.userChoice;
     console.log(`User response to the install prompt: ${outcome}`);
-    // We've used the prompt, and can't use it again
-    deferredPrompt = null;
+    // Reset deferredPrompt
+    window.deferredPrompt = null;
     // Hide our install button
     installBtn.style.display = 'none';
   });
@@ -524,4 +524,5 @@ window.addEventListener('appinstalled', (evt) => {
     installBtn.style.display = 'none';
   }
 });
+
 

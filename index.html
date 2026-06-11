@@ -26,6 +26,16 @@
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Early PWA Prompt Capturing -->
+  <script>
+    window.deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      window.deferredPrompt = e;
+      window.dispatchEvent(new CustomEvent('pwa-installable'));
+    });
+  </script>
 </head>
 <body>
 
