@@ -4,6 +4,9 @@ const ASSETS = [
   '/index.html',
   '/styles.css',
   '/app.js',
+  '/manifest.json',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap',
   'https://cdn.jsdelivr.net/npm/apexcharts',
   'https://unpkg.com/lucide@latest'
