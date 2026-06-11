@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA | Live Price Analysis Dashboard</title>
+  <meta name="description" content="A premium real-time tracker and analysis dashboard for live Gold, Silver, Crude Oil, and local Petrol prices across India.">
+  
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- ApexCharts for rich visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Background Ambient Glows -->
+  <div class="ambient-glow bg-gold"></div>
+  <div class="ambient-glow bg-silver"></div>
+  <div class="ambient-glow bg-petrol"></div>
+
+  <!-- Live Marquee Ticker -->
+  <div class="ticker-wrap" id="ticker-section">
+    <div class="ticker-content" id="live-ticker">
+      <span class="ticker-item">Gold: Loading...</span>
+      <span class="ticker-item">Silver: Loading...</span>
+      <span class="ticker-item">USD/INR: Loading...</span>
+      <span class="ticker-item">Delhi Petrol: Loading...</span>
+      <span class="ticker-item">Mumbai Petrol: Loading...</span>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <!-- Header Section -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">A</div>
+        <div class="brand-text">
+          <h1>AURA PRICE</h1>
+          <span class="sub-logo">Live Analysis & Commodities Dashboard</span>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="pulse-dot"></span>
+        <span id="update-status">Live Connected</span>
+      </div>
+    </header>
+
+    <!-- Main Metrics Grid -->
+    <section class="metrics-grid">
+      
+      <!-- Gold Metric Card -->
+      <div class="card metric-card gold-card active" id="gold-metric-card" onclick="selectCommodity('gold')">
+        <div class="card-header">
+          <div class="icon-box gold-icon">
+            <i data-lucide="sparkles"></i>
+          </div>
+          <span class="badge">Gold (24K)</span>
+        </div>
+        <div class="card-body">
+          <h2 class="price-display" id="gold-price-inr">₹--,--</h2>
+          <div class="price-change-row">
+            <span class="price-sub" id="gold-price-usd">$--,---.00 / oz</span>
+            <span class="price-change positive" id="gold-change">+0.00%</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="domestic-rates">
+            <div class="rate-col">
+              <span class="label">10g 24K</span>
+              <span class="value" id="gold-24k-10g">₹--,--</span>
+            </div>
+            <div class="rate-divider"></div>
+            <div class="rate-col">
+              <span class="label">10g 22K (Jewelry)</span>
+              <span class="value" id="gold-22k-10g">₹--,--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Silver Metric Card -->
+      <div class="card metric-card silver-card" id="silver-metric-card" onclick="selectCommodity('silver')">
+        <div class="card-header">
+          <div class="icon-box silver-icon">
+            <i data-lucide="layers"></i>
+          </div>
+          <span class="badge">Silver</span>
+        </div>
+        <div class="card-body">
+          <h2 class="price-display" id="silver-price-inr">₹--,--</h2>
+          <div class="price-change-row">
+            <span class="price-sub" id="silver-price-usd">$--.-- / oz</span>
+            <span class="price-change positive" id="silver-change">+0.00%</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="domestic-rates">
+            <div class="rate-col">
+              <span class="label">1g Price</span>
+              <span class="value" id="silver-1g">₹--.--</span>
+            </div>
+            <div class="rate-divider"></div>
+            <div class="rate-col">
+              <span class="label">1kg Price</span>
+              <span class="value" id="silver-1kg">₹--,--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USD/INR Exchange Rate Metric Card -->
+      <div class="card metric-card usd-card" id="usdinr-metric-card" onclick="selectCommodity('usdinr')">
+        <div class="card-header">
+          <div class="icon-box usd-icon">
+            <i data-lucide="dollar-sign"></i>
+          </div>
+          <span class="badge">US Dollar (USD/INR)</span>
+        </div>
+        <div class="card-body">
+          <h2 class="price-display" id="usdinr-price-inr">₹--.--</h2>
+          <div class="price-change-row">
+            <span class="price-sub" id="usdinr-price-usd">$1.00 USD</span>
+            <span class="price-change positive" id="usdinr-change">+0.00%</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="domestic-rates">
+            <div class="rate-col">
+              <span class="label">Exchange Rate</span>
+              <span class="value">USD to INR</span>
+            </div>
+            <div class="rate-divider"></div>
+            <div class="rate-col">
+              <span class="label">Symbol</span>
+              <span class="value">USDINR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Domestic Petrol Metric Card -->
+      <div class="card metric-card petrol-card" id="petrol-metric-card" onclick="selectCommodity('petrol')">
+        <div class="card-header">
+          <div class="icon-box petrol-icon">
+            <i data-lucide="fuel"></i>
+          </div>
+          <div class="city-selector-wrap">
+            <select id="city-selector" class="city-select" onchange="updateCityPetrolPrice()" onclick="event.stopPropagation()">
+              <!-- Options loaded dynamically -->
+            </select>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="price-display" id="petrol-price-inr">₹--.--</h2>
+          <div class="price-change-row">
+            <span class="price-sub" id="petrol-currency">Per Litre</span>
+            <span class="price-change neutral" id="petrol-change">0.00</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="domestic-rates">
+            <div class="rate-col">
+              <span class="label">Daily Update</span>
+              <span class="value" id="petrol-update-time">06:00 AM</span>
+            </div>
+            <div class="rate-divider"></div>
+            <div class="rate-col">
+              <span class="label">Source</span>
+              <span class="value" id="petrol-source">Live Feed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Main Workspace Section (Charts & Tools) -->
+    <main class="dashboard-workspace">
+      
+      <!-- Chart Component -->
+      <section class="chart-section card">
+        <div class="chart-header">
+          <div class="chart-title-wrap">
+            <h3 id="chart-title">Gold Trend Analysis</h3>
+            <span id="chart-sub">Interactive historical charts powered by Yahoo Finance</span>
+          </div>
+          <div class="chart-controls">
+            <button id="btn-1d" class="chart-btn" onclick="setTimeframe('1d')">1D</button>
+            <button id="btn-1w" class="chart-btn" onclick="setTimeframe('1w')">1W</button>
+            <button id="btn-1m" class="chart-btn active" onclick="setTimeframe('1m')">1M</button>
+            <button id="btn-1y" class="chart-btn" onclick="setTimeframe('1y')">1Y</button>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div id="main-chart"></div>
+        </div>
+      </section>
+
+      <!-- Calculator Section -->
+      <section class="calculator-section card">
+        <div class="section-title-wrap">
+          <h3>Smart Price Calculator</h3>
+          <span>Instantly calculate metals rates by weight in INR</span>
+        </div>
+        
+        <div class="calculator-body">
+          <div class="calc-tabs">
+            <button class="calc-tab active" id="calc-tab-gold" onclick="switchCalcTab('gold')">Gold</button>
+            <button class="calc-tab" id="calc-tab-silver" onclick="switchCalcTab('silver')">Silver</button>
+          </div>
+
+          <div class="input-group">
+            <label for="calc-weight">Weight (Grams)</label>
+            <div class="input-wrapper">
+              <input type="number" id="calc-weight" min="0" value="10" oninput="runCalculation()">
+              <span class="input-suffix">g</span>
+            </div>
+          </div>
+
+          <div class="input-group" id="purity-group">
+            <label for="calc-purity">Purity Grade</label>
+            <select id="calc-purity" onchange="runCalculation()">
+              <option value="24">24 Karat (99.9% Pure)</option>
+              <option value="22" selected>22 Karat (91.6% Pure)</option>
+              <option value="18">18 Karat (75.0% Pure)</option>
+            </select>
+          </div>
+
+          <div class="calculation-result">
+            <span class="calc-label" id="calc-result-title">Estimated 22K Gold Price</span>
+            <h2 class="calc-value" id="calc-result-value">₹--,--</h2>
+            <p class="calc-info" id="calc-result-info">Calculated using live market price & exchange rate.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Compare Petrol Prices Section -->
+    <section class="petrol-comparison-section card">
+      <div class="section-title-wrap">
+        <h3>Domestic Petrol Price Directory</h3>
+        <span>Compare petrol rates across various regions and metro hubs in India</span>
+      </div>
+      <div class="table-container">
+        <table class="comparison-table" id="petrol-comparison-table">
+          <thead>
+            <tr>
+              <th>City Hub</th>
+              <th>Petrol Rate (Per Ltr)</th>
+              <th>Status / Change</th>
+            </tr>
+          </thead>
+          <tbody id="petrol-table-body">
+            <!-- Table rows filled dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="app-footer">
+      <p>&copy; 2026 Aura Price Analysis. Designed with custom dark glassmorphism. All financial charts are sourced from public exchange feeds.</p>
+      <div class="footer-links">
+        <span class="link-item"><i data-lucide="refresh-cw"></i> Auto-updates every 5 mins</span>
+        <span class="link-item"><i data-lucide="info"></i> Standard market delay apply</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

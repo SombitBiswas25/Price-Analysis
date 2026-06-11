@@ -1,0 +1,20 @@
+{
+  "name": "price-analysis",
+  "version": "1.0.0",
+  "description": "Live Price Analysis for Gold, Silver, Crude Oil and Petrol",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "serverless-http": "^3.2.0"
+  }
+}
