@@ -727,3 +727,38 @@ body {
   width: 12px;
   height: 12px;
 }
+
+/* Header actions container for PWA button */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.install-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-muted) 100%);
+  border: none;
+  color: var(--text-dark);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 15px var(--gold-glow);
+  transition: var(--transition-smooth);
+}
+
+.install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 188, 63, 0.4);
+}
+
+.install-btn i {
+  width: 14px;
+  height: 14px;
+}
+
